@@ -1,0 +1,17 @@
+{{ define "home" }}
+{{ template "header" . }}
+<header>
+    {{ template "menu" }}
+    <!-- Jumbotron -->
+</header>
+
+<body class="p-2">
+    <div class="text-center">
+        <h1 class="mb-3">{{.Title}}</h1>
+        <h4 class="mb-3">{{.Body}}</h4>
+        <p>Role: <strong>{{.Role}}</strong></p>
+        <a class="btn btn-primary" href="{{.Path}}" role="button">{{.Action}}</a>
+    </div>
+</body>
+{{template "footer"}}
+{{end}}
