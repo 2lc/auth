@@ -44,13 +44,13 @@ func Auth(c *gin.Context) {
 
 func Index(c *gin.Context) {
 	cookie, err := c.Cookie("token")
-    msg := ""
+	msg := ""
 	role := ""
 
 	if err != nil {
 		//msg = "unauthorized, favor efetuar o login."
-	msg = err.Error()
-	c.Redirect(http.StatusFound,"auth")
+		msg = err.Error()
+		c.Redirect(http.StatusFound, "auth")
 	}
 
 	claims, err := utils.ParseToken(cookie)
@@ -64,9 +64,9 @@ func Index(c *gin.Context) {
 
 	//if claims.Role != "user" && claims.Role != "admin" {
 	//	msg = "unauthorized, sem perfil de acesso."
-		//return
+	//return
 	//}
-    //println(msg)
+	//println(msg)
 
 	page := &Data{Title: "Index page", Body: "Welcome to our brand new index page.", Path: "/auth", Action: "Login", Message: msg, Role: role}
 
@@ -128,11 +128,11 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "localhost", false, true)
+	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "auth-77wt.onrender.com", false, true)
 
 	//page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: msg, Role: claims.Role}
 	//renderTemplate(c, "home", page)
-	c.Redirect(http.StatusFound,"home")
+	c.Redirect(http.StatusFound, "home")
 
 	//c.JSON(200, gin.H{"success": "user logged in"})
 }
@@ -173,7 +173,7 @@ func Home(c *gin.Context) {
 
 	if err != nil {
 		//c.JSON(401, gin.H{"error1": "unauthorized"})
-		c.Redirect(http.StatusFound,"/auth/")
+		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
 
@@ -181,7 +181,7 @@ func Home(c *gin.Context) {
 
 	if err != nil {
 		//c.JSON(401, gin.H{"error2": "unauthorized"})
-		c.Redirect(http.StatusFound,"/auth/")
+		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
 
