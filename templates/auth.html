@@ -9,19 +9,21 @@
                     <div class="card shadow" style="border-radius: 1rem;">
                         <div class="card-body p-5 text-center">
 
-                            <h3 class="mb-5">Sign in</h3>
+                            <h3 class="mb-5 fw-bolder text-muted">Sign in</h3>
                             <form action="{{ .Path }}" method="POST">
-                                <div class="form-outline mb-4">
-                                    <input type="email" id="typeEmailX-2" name="email" class="form-control border" />
-                                    <label class="form-label" for="typeEmailX-2">Email</label>
+                                <div class="form-floating mb-4">
+                                    <input type="email" id="typeEmailX-2" name="email" class="form-control" required>
+                                    <label for="typeEmailX-2">Email</label>
                                 </div>
 
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="typePasswordX-2" name="password" class="form-control border" />
-                                    <label class="form-label" for="typePasswordX-2">Password</label>
+                                <div class="form-floating mb-4">
+                                    <input type="password" id="typePasswordX-2" name="password" class="form-control"
+                                        required>
+                                    <label for="typePasswordX-2">Password</label>
                                 </div>
-
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                                <div class="d-grid gap-2"><button class="btn btn-lg btn-primary"
+                                        type="submit">Login</button>
+                                </div>
                             </form>
                             <hr class="my-4">
 
@@ -29,7 +31,7 @@
                     </div>
                 </div>
                 {{ if .Message }}
-                <div class="alert alert-light alert-dismissible d-flex small align-items-center position-absolute top-40 start-50 translate-middle col-md-3 col-md-offset-3"
+                <div class="alert alert-light border-secondary alert-dismissible d-flex align-items-center position-absolute top-40 start-50 translate-middle col-md-3 col-md-offset-3"
                     role="alert">
                     <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
                         <use xlink:href="#{{ .Icon }}" />
