@@ -177,12 +177,14 @@ func Home(c *gin.Context) {
 		//return
 	}
 
-	claims, erro := utils.ParseToken(cookie)
+	claims, err := utils.ParseToken(cookie)
 
-	if erro != nil {
+	if err != nil {
 		//c.JSON(401, gin.H{"error2": "unauthorized"})
-		c.Redirect(http.StatusFound, "/auth/")
-		//return
+		if err == jwt.ErrSignatureInvalid {
+			c.Redirect(http.StatusFound, "/auth/")
+		}
+      println("Erro: " + err.Error())
 	}
 
 	if claims.Role != "user" && claims.Role != "admin" {
