@@ -179,7 +179,7 @@ func Home(c *gin.Context) {
 
 	claims, _ := utils.ParseToken(cookie)
 
-	if claims != nil {
+	if claims == nil {
 		//c.JSON(401, gin.H{"error2": "unauthorized"})
 		c.Redirect(http.StatusFound, "/auth/")
 		//return
