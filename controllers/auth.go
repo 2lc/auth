@@ -176,17 +176,18 @@ func Home(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
+    
+	claims := &models.Claims{}
 
-	claims, err := utils.ParseToken(cookie)
-
-	a := claims.Valid()
+	claims, err = utils.ParseToken(cookie)
 
 	if err != nil {
 		//c.JSON(401, gin.H{"error2": "unauthorized"})
 		if err == jwt.ErrSignatureInvalid{
 			c.Redirect(http.StatusFound, "/auth/")
 		}
-      println("Erro: " + err.Error() + " ===> " + a.Error())
+	  a := claims.Valid()
+      println("Erro: " + err.Error() + a.Error())
 	}
 
 	if claims.Role != "user" && claims.Role != "admin" {
