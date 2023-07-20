@@ -173,7 +173,7 @@ func Home(c *gin.Context) {
 
 	if err != nil {
 		//c.JSON(401, gin.H{"error1": "unauthorized"})
-		c.Redirect(http.StatusUnauthorized, "/auth/")
+		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
 
@@ -181,12 +181,12 @@ func Home(c *gin.Context) {
 
 	if err != nil {
 		//c.JSON(401, gin.H{"error2": "unauthorized"})
-		c.Redirect(http.StatusUnauthorized, "/auth/")
+		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
 
 	if claims.Role != "user" && claims.Role != "admin" {
-		c.Redirect(http.StatusUnauthorized, "/auth/")
+		c.Redirect(http.StatusFound, "/auth/")
 	}
 
 	page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: "", Role: claims.Role}
