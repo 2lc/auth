@@ -185,7 +185,7 @@ func Home(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/auth/")
 		//return
 	}
-	println(claims.ExpiresAt)
+	println("Error: " + err.Error())
 	println("Role: " + claims.Role)
 	println(claims.Valid().Error())
 
