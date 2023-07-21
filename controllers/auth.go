@@ -184,7 +184,7 @@ func Home(c *gin.Context) {
 	} else {
 		if claims.Role != "user" && claims.Role != "admin" {
 			//c.Redirect(http.StatusFound, "/auth/")
-			c.HTML(http.StatusUnauthorized,"home","Não autorizado.")
+			http.Error(c.Writer, "Acesso Não autorizado.", http.StatusUnauthorized)
 			return
 		}
 		page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: "", Role: claims.Role}
