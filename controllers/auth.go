@@ -172,9 +172,7 @@ func Home(c *gin.Context) {
 	cookie, err := c.Cookie("token")
 
 	if err != nil {
-		//c.JSON(401, gin.H{"error1": "unauthorized"})
 		c.Redirect(http.StatusFound, "/auth/")
-		//return
 	}
 
 	claims, err := utils.ParseToken(cookie)
@@ -183,7 +181,6 @@ func Home(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/auth/")
 	} else {
 		if claims.Role != "user" && claims.Role != "admin" {
-			//c.Redirect(http.StatusFound, "/auth/")
 			http.Error(c.Writer, "Acesso Não autorizado.", http.StatusUnauthorized)
 			return
 		}
