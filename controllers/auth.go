@@ -184,7 +184,7 @@ func Home(c *gin.Context) {
 			http.Error(c.Writer, "Acesso Não autorizado.", http.StatusUnauthorized)
 			return
 		}
-		page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: "", Role: claims.Role}
+		page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/logout", Action: "Logout", Message: "", Role: claims.Role}
 		renderTemplate(c, "home", page)
 	}
 
@@ -215,7 +215,7 @@ func Premium(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	c.SetCookie("token", "", -1, "/", "localhost", false, true)
+	c.SetCookie("token", "", -1, "/", "auth-77wt.onrender.com", false, true)
 	c.JSON(200, gin.H{"success": "user logged out"})
 }
 
