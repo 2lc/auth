@@ -180,9 +180,9 @@ func Home(c *gin.Context) {
 	claims, err := utils.ParseToken(cookie)
 
 	if err != nil {
-		println("Erro: " + err.Error())
+		c.Redirect(http.StatusFound, "/auth/")
 	} else {
-		if claims.Role != "user" && claims.Role != "admin" {
+		if claims.Role != "user" && claims.Role != "admin1" {
 			c.Redirect(http.StatusFound, "/auth/")
 		}
 		page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: "", Role: claims.Role}
