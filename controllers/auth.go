@@ -182,8 +182,10 @@ func Home(c *gin.Context) {
 	if err != nil {
 		c.Redirect(http.StatusFound, "/auth/")
 	} else {
-		if claims.Role != "user" && claims.Role != "admin1" {
-			c.Redirect(http.StatusFound, "/auth/")
+		if claims.Role != "user" && claims.Role != "admin" {
+			//c.Redirect(http.StatusFound, "/auth/")
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
 		}
 		page := &Data{Title: "Home page", Body: "Welcome to our brand new home page.", Path: "/home", Action: "Logout", Message: "", Role: claims.Role}
 		renderTemplate(c, "home", page)
