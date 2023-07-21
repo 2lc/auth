@@ -188,7 +188,6 @@ func Home(c *gin.Context) {
 	if claims == nil {
 		println("Claims is nil")
 	} else {
-		println("Expirado: " + claims.Valid().Error())
 		if claims.Role != "user" && claims.Role != "admin" {
 			c.Redirect(http.StatusFound, "/auth/")
 		}
