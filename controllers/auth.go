@@ -177,9 +177,7 @@ func Home(c *gin.Context) {
 		//return
 	}
 
-	claims := &models.Claims{}
-
-	claims, err = utils.ParseToken(cookie)
+	claims, err := utils.ParseToken(cookie)
 
 	if err != nil {
 		println("Erro: " + err.Error())
@@ -190,6 +188,7 @@ func Home(c *gin.Context) {
 	if claims == nil {
 		println("Claims is nil")
 	} else {
+		println("Expirado: " + claims.Valid().Error())
 		if claims.Role != "user" && claims.Role != "admin" {
 			c.Redirect(http.StatusFound, "/auth/")
 		}
