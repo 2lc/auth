@@ -182,12 +182,6 @@ func Home(c *gin.Context) {
 	if err != nil {
 		println("Erro: " + err.Error())
 	} else {
-		println("erro is nil")
-	}
-
-	if claims == nil {
-		println("Claims is nil")
-	} else {
 		if claims.Role != "user" && claims.Role != "admin" {
 			c.Redirect(http.StatusFound, "/auth/")
 		}
