@@ -47,6 +47,7 @@ func Index(c *gin.Context) {
 	cookie, err := c.Cookie("token")
 	msg := ""
 	role := ""
+	errtoken = ""
 
 	if err != nil {
 		//msg = "unauthorized, favor efetuar o login."
