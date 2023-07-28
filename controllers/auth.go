@@ -24,6 +24,8 @@ type Data struct {
 	Role    string
 }
 
+var errtoken = ""
+
 var jwtKey = []byte("my_secret_key")
 
 var templates = template.Must(template.ParseGlob("templates/*"))
@@ -37,8 +39,7 @@ func renderTemplate(c *gin.Context, tmpl string, page *Data) {
 }
 
 func Auth(c *gin.Context) {
-
-	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In"}
+	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: errtoken, Color: "Gold", Icon: "exclamation-triangle-fill"}
 	renderTemplate(c, "auth", page)
 }
 
@@ -49,7 +50,7 @@ func Index(c *gin.Context) {
 
 	if err != nil {
 		//msg = "unauthorized, favor efetuar o login."
-		msg = err.Error()
+		errtoken = err.Error()
 		c.Redirect(http.StatusFound, "auth")
 	}
 
