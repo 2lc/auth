@@ -99,7 +99,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
-		c.Redirect(http.StatusFound, "auth")
+		c.Redirect(http.StatusFound, "/auth")
 	}
 
 	errHash := utils.CompareHashPassword(password, existingUser.Password)
@@ -108,7 +108,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
-		c.Redirect(http.StatusFound, "auth")
+		c.Redirect(http.StatusFound, "/auth")
 	}
 
 	expirationTime := time.Now().Add(5 * time.Minute)
