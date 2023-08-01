@@ -11,6 +11,8 @@ import (
 func AuthRoutes(r *gin.Engine) {
     r.GET("/", controllers.Index)
     r.GET("/auth",controllers.Auth)
+    r.GET("/register",controllers.Register)
+    r.POST("/register",controllers.Signup)
     r.POST("/login", controllers.Login)
     r.POST("/signup", controllers.Signup)
     r.GET("/home", controllers.Home)

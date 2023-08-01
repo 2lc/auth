@@ -24,7 +24,7 @@ type Data struct {
 	Role    string
 }
 
-var errtoken = ""
+var msgerror = ""
 
 var jwtKey = []byte("my_secret_key")
 
@@ -39,7 +39,7 @@ func renderTemplate(c *gin.Context, tmpl string, page *Data) {
 }
 
 func Auth(c *gin.Context) {
-	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: errtoken, Color: "Gold", Icon: "exclamation-triangle-fill"}
+	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msgerror, Color: "Gold", Icon: "exclamation-triangle-fill"}
 	renderTemplate(c, "auth", page)
 }
 
@@ -47,11 +47,11 @@ func Index(c *gin.Context) {
 	cookie, err := c.Cookie("token")
 	msg := ""
 	role := ""
-	errtoken = ""
+	msgerror = ""
 
 	if err != nil {
 		msg = err.Error()
-		errtoken = "Autenticação requerida, faça um novo login."
+		msgerror = "Autenticação requerida, faça um novo login."
 		c.Redirect(http.StatusFound, "auth")
 	}
 
@@ -138,35 +138,41 @@ func Login(c *gin.Context) {
 
 	//c.JSON(200, gin.H{"success": "user logged in"})
 }
+func Register(c *gin.Context) {
+	page := &Data{Title: "Register page", Body: "Welcome to our brand new home page.", Path: "/register", Action: "Register", Message: msgerror, Color: "Gold", Icon: "exclamation-triangle-fill"}
+	renderTemplate(c, "register", page)
+}
 
 func Signup(c *gin.Context) {
 	var user models.User
-
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
+    
+	msgerror = ""
+	user.Name = c.PostForm("name")
+	user.Email = c.PostForm("email")
+	user.Password = c.PostForm("password")
+	user.Role = "User"
 
 	var existingUser models.User
 
 	models.DB.Where("email = ?", user.Email).First(&existingUser)
 
 	if existingUser.ID != 0 {
-		c.JSON(400, gin.H{"error": "user already exists"})
-		return
-	}
-
+		msgerror = "user already exists"
+	} 
+	
 	var errHash error
 	user.Password, errHash = utils.GenerateHashPassword(user.Password)
 
 	if errHash != nil {
-		c.JSON(500, gin.H{"error": "could not generate password hash"})
-		return
+		msgerror = "could not generate password hash"
 	}
 
-	models.DB.Create(&user)
-
-	c.JSON(200, gin.H{"success": "user created"})
+	if msgerror == "" {
+		models.DB.Create(&user)
+		msgerror = "User created sucessfull."
+	}
+	
+	c.Redirect(http.StatusFound, "register")
 }
 
 func Home(c *gin.Context) {
@@ -193,7 +199,6 @@ func Home(c *gin.Context) {
 }
 
 func Premium(c *gin.Context) {
-
 	cookie, err := c.Cookie("token")
 
 	if err != nil {
@@ -214,6 +219,7 @@ func Premium(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"success": "premium page", "role": claims.Role})
+
 }
 
 func Logout(c *gin.Context) {
@@ -240,9 +246,9 @@ func ResetPassword(c *gin.Context) {
 	models.DB.Where("email = ?", email).First(&existingUser)
 
 	if existingUser.ID == 0 {
-		errtoken = "user does not exist"
+		msgerror = "user does not exist"
 	} else {
-		errtoken = "Um email com o link de reset foi enviado para " + email
+		msgerror = "Um email com o link de reset foi enviado para " + email
 	}
 	c.Redirect(http.StatusFound, "/auth/")
 	//var errHash error

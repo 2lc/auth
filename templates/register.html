@@ -1,0 +1,61 @@
+{{ define "register" }}
+{{ template "header" . }}
+
+<body>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow" style="border-radius: 1rem;">
+                        <div class="card-body p-5 text-center">
+                            <div class="position-absolute top-0 start-50 translate-middle bg-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="#D3D3D3"
+                                    class="bi bi-person-vcard" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z" />
+                                    <path
+                                        d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z" />
+                                </svg>
+                            </div>
+                            <h3 class="mb-5 mt-2 text-muted"><strong>Create Account</strong></h3>
+                            <form action="{{ .Path }}" method="POST">
+                                <div class="form-floating mb-4">
+                                    <input type="text" id="typeText-2" name="name" class="form-control" required>
+                                    <label for="typeText-2">Name</label>
+                                </div>
+                                <div class="form-floating mb-4">
+                                    <input type="email" id="typeEmailX-2" name="email" class="form-control" required>
+                                    <label for="typeEmailX-2">Email</label>
+                                </div>
+
+                                <div class="form-floating mb-4">
+                                    <input type="password" id="typePasswordX-2" name="password" class="form-control"
+                                        required>
+                                    <label for="typePasswordX-2">Password</label>
+                                </div>
+                                <div class="form-floating mb-4">
+                                    <input type="password" id="typePasswordX-3" name="confirm" class="form-control"
+                                        required>
+                                    <label for="typePasswordX-3">Confirm Password</label>
+                                </div>
+                                <div class="d-grid gap-2"><button class="btn btn-lg btn-primary"
+                                        type="submit">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {{ if .Message }}
+                <div class="alert alert-light border-secondary alert-dismissible d-flex align-items-center position-absolute top-40 start-50 translate-middle col-md-3 col-md-offset-3"
+                    role="alert">
+                    <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
+                        <use xlink:href="#{{ .Icon }}" />
+                    </svg>
+                    <div class="ms-1">{{ .Message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {{ end }}
+            </div>
+    </section>
+</body>
+{{ end }}
