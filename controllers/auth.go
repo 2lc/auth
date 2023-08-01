@@ -99,7 +99,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
-		c.Redirect(http.StatusFound, "/auth")
+		return
 	}
 
 	errHash := utils.CompareHashPassword(password, existingUser.Password)
@@ -108,7 +108,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
-		c.Redirect(http.StatusFound, "/auth")
+		return
 	}
 
 	expirationTime := time.Now().Add(5 * time.Minute)
@@ -129,7 +129,7 @@ func Login(c *gin.Context) {
 		msgerror = "Could not generate token"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
-		c.Redirect(http.StatusFound, "auth")
+		return
 	}
 
 	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "auth-77wt.onrender.com", false, true)
@@ -148,7 +148,7 @@ func Register(c *gin.Context) {
 
 func Signup(c *gin.Context) {
 	var user models.User
-    
+
 	msgerror = ""
 	user.Name = c.PostForm("name")
 	user.Email = c.PostForm("email")
@@ -163,8 +163,8 @@ func Signup(c *gin.Context) {
 		cor = "Gold"
 		icone = "exclamation-triangle-fill"
 		msgerror = "user already exists"
-	} 
-	
+	}
+
 	var errHash error
 	user.Password, errHash = utils.GenerateHashPassword(user.Password)
 
@@ -180,7 +180,7 @@ func Signup(c *gin.Context) {
 		icone = "check-circle-fill"
 		msgerror = "User created sucessfull."
 	}
-	
+
 	c.Redirect(http.StatusFound, "register")
 }
 
