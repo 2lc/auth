@@ -18,11 +18,13 @@
                             </div>
                             {{ if .Message }}
                             <div class="alert alert-light d-flex alert-dismissible fade show" role="alert">
-                                <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
+                                <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24"
+                                    fill="{{ .Color }}">
                                     <use xlink:href="#{{ .Icon }}" />
                                 </svg>
                                 <div>{{ .Message }}</div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                             {{ end }}
                             <h3 class="mb-5 mt-2 text-muted"><strong>Sign In</strong></h3>
