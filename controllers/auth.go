@@ -39,7 +39,7 @@ func renderTemplate(c *gin.Context, tmpl string, page *Data) {
 }
 
 func Auth(c *gin.Context) {
-	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msgerror, Color: "Gold", Icon: "exclamation-triangle-fill"}
+	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msgerror, Color: cor, Icon: icone}
 	renderTemplate(c, "auth", page)
 }
 
@@ -52,6 +52,8 @@ func Index(c *gin.Context) {
 	if err != nil {
 		msg = err.Error()
 		msgerror = "Autenticação requerida, faça um novo login."
+		cor = "Gold"
+		icone = "exclamation-triangle-fill"
 		c.Redirect(http.StatusFound, "auth")
 	}
 
@@ -78,7 +80,7 @@ func Index(c *gin.Context) {
 
 func Login(c *gin.Context) {
 
-	msg := ""
+	msgerror = ""
 
 	email := c.PostForm("email")
 	password := c.PostForm("password")
@@ -94,19 +96,19 @@ func Login(c *gin.Context) {
 	models.DB.Where("email = ?", email).First(&existingUser)
 
 	if existingUser.ID == 0 {
-		msg = "Invalid username or password"
-		page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msg, Role: "", Color: "Crimson", Icon: "sign-stop-fill"}
-		renderTemplate(c, "auth", page)
-		return
+		msgerror = "Invalid username or password"
+		cor = "Crimson"
+		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 	}
 
 	errHash := utils.CompareHashPassword(password, existingUser.Password)
 
 	if !errHash {
-		msg = "Invalid username or password"
-		page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msg, Role: "", Color: "Crimson", Icon: "sign-stop-fill"}
-		renderTemplate(c, "auth", page)
-		return
+		msgerror = "Invalid username or password"
+		cor = "Crimson"
+		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 	}
 
 	expirationTime := time.Now().Add(5 * time.Minute)
@@ -124,10 +126,10 @@ func Login(c *gin.Context) {
 	tokenString, err := token.SignedString(jwtKey)
 
 	if err != nil {
-		msg = "Could not generate token"
-		page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/login", Action: "Sign In", Message: msg, Role: "", Color: "Crimson", Icon: "sign-stop-fill"}
-		renderTemplate(c, "auth", page)
-		return
+		msgerror = "Could not generate token"
+		cor = "Crimson"
+		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 	}
 
 	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "auth-77wt.onrender.com", false, true)
@@ -138,6 +140,7 @@ func Login(c *gin.Context) {
 
 	//c.JSON(200, gin.H{"success": "user logged in"})
 }
+
 func Register(c *gin.Context) {
 	page := &Data{Title: "Register page", Body: "Welcome to our brand new home page.", Path: "/register", Action: "Register", Message: msgerror, Color: cor, Icon: icone}
 	renderTemplate(c, "register", page)
@@ -186,12 +189,18 @@ func Home(c *gin.Context) {
 	cookie, err := c.Cookie("token")
 
 	if err != nil {
+		msgerror = err.Error()
+		cor = "Crimson"
+		icone = "sign-stop-fill"
 		c.Redirect(http.StatusFound, "/auth/")
 	}
 
 	claims, err := utils.ParseToken(cookie)
 
 	if err != nil {
+		msgerror = err.Error()
+		cor = "Crimson"
+		icone = "sign-stop-fill"
 		c.Redirect(http.StatusFound, "/auth/")
 	} else {
 		if claims.Role != "user" && claims.Role != "admin" {
@@ -232,6 +241,7 @@ func Logout(c *gin.Context) {
 	c.SetCookie("token", "", -1, "/", "auth-77wt.onrender.com", false, true)
 	//c.JSON(200, gin.H{"success": "user logged out"})
 	http.Error(c.Writer, "Logout realizado.", http.StatusOK)
+	msgerror = ""
 }
 
 // ADDITIONAL FUNCTIONALITIES
@@ -253,8 +263,12 @@ func ResetPassword(c *gin.Context) {
 
 	if existingUser.ID == 0 {
 		msgerror = "user does not exist"
+		cor = "Gold"
+		icone = "exclamation-triangle-fill"
 	} else {
 		msgerror = "Um email com o link de reset foi enviado para " + email
+		cor = "#03c03c"
+		icone = "check-circle-fill"
 	}
 	c.Redirect(http.StatusFound, "/auth/")
 	//var errHash error
