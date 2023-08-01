@@ -17,8 +17,17 @@
                                         d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z" />
                                 </svg>
                             </div>
+                            {{ if .Message }}
+                            <div class="alert alert-light d-flex alert-dismissible fade show" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
+                                    <use xlink:href="#{{ .Icon }}" />
+                                </svg>
+                                <div>{{ .Message }}</div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {{ end }}
                             <h3 class="mb-5 mt-2 text-muted"><strong>Create Account</strong></h3>
-                            <form action="{{ .Path }}" method="POST">
+                            <form action="{{ .Path }}" method="POST" oninput='confirm.setCustomValidity(confirm.value != password.value ? "Passwords is not the same." : "")'>
                                 <div class="form-floating mb-4">
                                     <input type="text" id="typeText-2" name="name" class="form-control" required>
                                     <label for="typeText-2">Name</label>
@@ -45,17 +54,7 @@
                         </div>
                     </div>
                 </div>
-                {{ if .Message }}
-                <div class="alert alert-light border-secondary alert-dismissible d-flex align-items-center position-absolute top-40 start-50 translate-middle col-md-3 col-md-offset-3"
-                    role="alert">
-                    <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
-                        <use xlink:href="#{{ .Icon }}" />
-                    </svg>
-                    <div class="ms-1">{{ .Message }}</div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {{ end }}
-            </div>
     </section>
+    </div>
 </body>
 {{ end }}

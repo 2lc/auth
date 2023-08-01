@@ -24,7 +24,7 @@ type Data struct {
 	Role    string
 }
 
-var msgerror = ""
+var msgerror, cor, icone string
 
 var jwtKey = []byte("my_secret_key")
 
@@ -139,7 +139,7 @@ func Login(c *gin.Context) {
 	//c.JSON(200, gin.H{"success": "user logged in"})
 }
 func Register(c *gin.Context) {
-	page := &Data{Title: "Register page", Body: "Welcome to our brand new home page.", Path: "/register", Action: "Register", Message: msgerror, Color: "Gold", Icon: "exclamation-triangle-fill"}
+	page := &Data{Title: "Register page", Body: "Welcome to our brand new home page.", Path: "/register", Action: "Register", Message: msgerror, Color: cor, Icon: icone}
 	renderTemplate(c, "register", page)
 }
 
@@ -157,6 +157,8 @@ func Signup(c *gin.Context) {
 	models.DB.Where("email = ?", user.Email).First(&existingUser)
 
 	if existingUser.ID != 0 {
+		cor = "Gold"
+		icone = "exclamation-triangle-fill"
 		msgerror = "user already exists"
 	} 
 	
@@ -164,11 +166,15 @@ func Signup(c *gin.Context) {
 	user.Password, errHash = utils.GenerateHashPassword(user.Password)
 
 	if errHash != nil {
+		cor = "Gold"
+		icone = "exclamation-triangle-fill"
 		msgerror = "could not generate password hash"
 	}
 
 	if msgerror == "" {
 		models.DB.Create(&user)
+		cor = "#03c03c"
+		icone = "check-circle-fill"
 		msgerror = "User created sucessfull."
 	}
 	
