@@ -16,6 +16,15 @@
                                         d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                                 </svg>
                             </div>
+                            {{ if .Message }}
+                            <div class="alert alert-light d-flex alert-dismissible fade show" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
+                                    <use xlink:href="#{{ .Icon }}" />
+                                </svg>
+                                <div>{{ .Message }}</div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {{ end }}
                             <h3 class="mb-5 mt-2 text-muted"><strong>Sign In</strong></h3>
                             <form action="{{ .Path }}" method="POST">
                                 <div class="form-floating mb-4">
@@ -40,16 +49,6 @@
                         </div>
                     </div>
                 </div>
-                {{ if .Message }}
-                <div class="alert alert-light border-secondary alert-dismissible d-flex align-items-center position-absolute top-40 start-50 translate-middle col-md-3 col-md-offset-3"
-                    role="alert">
-                    <svg class="bi flex-shrink-0 me-2" role="img" width="24" height="24" fill="{{ .Color }}">
-                        <use xlink:href="#{{ .Icon }}" />
-                    </svg>
-                    <div class="ms-1">{{ .Message }}</div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {{ end }}
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
