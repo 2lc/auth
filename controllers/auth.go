@@ -99,6 +99,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 		return
 	}
 
@@ -108,6 +109,7 @@ func Login(c *gin.Context) {
 		msgerror = "Invalid username or password"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 		return
 	}
 
@@ -129,6 +131,7 @@ func Login(c *gin.Context) {
 		msgerror = "Could not generate token"
 		cor = "Crimson"
 		icone = "sign-stop-fill"
+		c.Redirect(http.StatusFound, "auth")
 		return
 	}
 
