@@ -4,13 +4,16 @@ package controllers
 import (
 	"auth/models"
 	"html/template"
+	"log"
 	"net/http"
+	"net/smtp"
 	"time"
 
 	"auth/utils"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Data struct {
@@ -251,7 +254,7 @@ func Logout(c *gin.Context) {
 
 func ResetPassword(c *gin.Context) {
 
-	//var user models.User
+	var reset models.Reset_pwds
 
 	//if err := c.ShouldBindJSON(&user); err != nil {
 	//	c.JSON(400, gin.H{"error": err.Error()})
@@ -268,7 +271,49 @@ func ResetPassword(c *gin.Context) {
 		msgerror = "user does not exist"
 		cor = "Gold"
 		icone = "exclamation-triangle-fill"
+		c.Redirect(http.StatusFound, "/auth/")
+		return
 	} else {
+
+		auth := smtp.PlainAuth("", "lcabral@gmail.com", "zypgehjyydbrzxjf", "smtp.gmail.com")
+
+		token, err := bcrypt.GenerateFromPassword([]byte(email), 14)
+
+		if err != nil {
+			msgerror = err.Error()
+			cor = "Crimson"
+			icone = "sign-stop-fill"
+			c.Redirect(http.StatusFound, "/auth/")
+			return
+		}
+
+		if msgerror == "" {
+			reset.Email = email
+			reset.Token = string(token)
+			models.DB.Create(&reset)
+		}
+
+		link := "http://localhost:8080/auth/reset/" + string(token)
+
+		// Here we do it all: connect to our server, set up a message and send it
+
+		to := []string{"lcabral@leader.com.br"}
+
+		msg := []byte("To: lcabral@leader.com.br\r\n" +
+
+			"Subject: Reset de senha\r\n" +
+
+			"\r\n" +
+
+			"Para criar uma nova senha, favor ccessar o link: " + link +
+
+			"\r\n")
+
+		err = smtp.SendMail("smtp.gmail.com:587", auth, "lcabral@gmail.com", to, msg)
+
+		if err != nil {
+			log.Fatal(err)
+		}
 		msgerror = "Um email com o link de reset foi enviado para " + email
 		cor = "#03c03c"
 		icone = "check-circle-fill"

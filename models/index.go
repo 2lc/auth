@@ -33,6 +33,10 @@ func InitDB(cfg Config) {
         panic(err)
     }
 
+    if err := db.AutoMigrate(&Reset_pwds{}); err != nil {
+        panic(err)
+    }
+
     fmt.Println("Migrated database")
 
     DB = db
