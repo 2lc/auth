@@ -25,8 +25,18 @@ type Data struct {
 	Color   string
 	Icon    string
 	Role    string
+	User    []models.User
 }
 
+/*
+	type Usu struct {
+		Id    int
+		Name  string
+		Email string
+		Role  string
+		Title string
+	}
+*/
 var msgerror, cor, icone string
 
 var jwtKey = []byte("my_secret_key")
@@ -332,3 +342,18 @@ func ResetPassword(c *gin.Context) {
 	//c.JSON(200, gin.H{"success": "password updated"})
 
 }
+
+func ListUsers(c *gin.Context) {
+
+	Usu := make([]models.User, 0)
+	models.DB.Find(&Usu)
+
+	page := &Data{Title: "User page", Body: "Lista de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usu}
+	err := templates.ExecuteTemplate(c.Writer, "users", page)
+	if err != nil {
+		log.Println(err)
+		http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+		return
+	}
+}
+

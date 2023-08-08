@@ -19,4 +19,5 @@ func AuthRoutes(r *gin.Engine) {
     r.GET("/premium", controllers.Premium)
     r.GET("/logout", controllers.Logout)
     r.POST("/reset", controllers.ResetPassword)
+    r.GET("/users", controllers.ListUsers)
 }
