@@ -28,15 +28,6 @@ type Data struct {
 	User    []models.User
 }
 
-/*
-	type Usu struct {
-		Id    int
-		Name  string
-		Email string
-		Role  string
-		Title string
-	}
-*/
 var msgerror, cor, icone string
 
 var jwtKey = []byte("my_secret_key")
@@ -349,7 +340,7 @@ func ListUsers(c *gin.Context) {
 	models.DB.Find(&Usu)
 
 	page := &Data{Title: "User page", Body: "Lista de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usu}
-	err := templates.ExecuteTemplate(c.Writer, "users", page)
+	err := templates.ExecuteTemplate(c.Writer, "userslist", page)
 	if err != nil {
 		log.Println(err)
 		http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
@@ -357,3 +348,40 @@ func ListUsers(c *gin.Context) {
 	}
 }
 
+func Users(c *gin.Context) {
+	/*
+		Usu := make([]models.User, 0)
+		models.DB.Find(&Usu)
+
+		page := &Data{Title: "User page", Body: "Lista de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usu}
+		err := templates.ExecuteTemplate(c.Writer, "userslist", page)
+		if err != nil {
+			log.Println(err)
+			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+			return
+		}*/
+	id := c.Param("id")
+	acao := c.Param("acao")
+
+	if c.Request.Method == "GET" {
+
+		Usr := make([]models.User, 0)
+
+		models.DB.Where("ID = ?", id).First(&Usr)
+
+		log.Println("ID: " + id)
+		page := &Data{Title: "User Manutenção", Body: "Manutenção de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usr}
+		err := templates.ExecuteTemplate(c.Writer, "users", page)
+		if err != nil {
+			log.Println(err)
+			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+			return
+		}
+
+	} else {
+
+		log.Println("Ação: " + acao)
+	}
+	log.Println("Entrei aqui!!! " + c.Request.Method)
+
+}

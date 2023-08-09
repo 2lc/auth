@@ -20,4 +20,6 @@ func AuthRoutes(r *gin.Engine) {
     r.GET("/logout", controllers.Logout)
     r.POST("/reset", controllers.ResetPassword)
     r.GET("/users", controllers.ListUsers)
+    r.GET("/users/:id", controllers.Users)
+    r.POST("/users/:id/:acao", controllers.Users)
 }
