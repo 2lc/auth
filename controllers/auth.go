@@ -364,6 +364,7 @@ func Users(c *gin.Context) {
 	acao := c.Param("acao")
 	nome := c.PostForm("name")
 	role := c.PostForm("role")
+	reset := c.PostForm("reset")
 
 	if c.Request.Method == "GET" {
 
@@ -407,10 +408,23 @@ func Users(c *gin.Context) {
 				cor = "#03c03c"
 				icone = "check-circle-fill"
 				msgerror = "User created sucessfull."
+			} else {
+				log.Println(msgerror)
 			}
-			c.Redirect(http.StatusFound, "/")
+		} else {
+			err := models.DB.Delete(&models.User{}, id).Error
+			if err == nil {
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User deleted sucessfull."
+			} else {
+				log.Println(err.Error())
+			}
 		}
+		c.Redirect(http.StatusFound, "/users")
 	}
-	//log.Println("Entrei aqui!!! " + c.Request.Method)
+	if reset == "on" {
+		log.Println("Entrei aqui!!! " + reset)
+	}
 
 }
