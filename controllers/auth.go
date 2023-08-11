@@ -362,6 +362,8 @@ func Users(c *gin.Context) {
 		}*/
 	id := c.Param("id")
 	acao := c.Param("acao")
+	nome := c.PostForm("name")
+	role := c.PostForm("role")
 
 	if c.Request.Method == "GET" {
 
@@ -379,9 +381,36 @@ func Users(c *gin.Context) {
 		}
 
 	} else {
+		if acao == "1" {
+			var existingUser models.User
 
-		log.Println("Ação: " + acao)
+			models.DB.Where("ID = ?", id).First(&existingUser)
+
+			if existingUser.ID == 0 {
+				cor = "Gold"
+				icone = "exclamation-triangle-fill"
+				msgerror = "user NOT already exists"
+				return
+			}
+
+			/*var errHash error
+			existingUser.Password, errHash = utils.GenerateHashPassword(existingUser.Password)
+
+			if errHash != nil {
+				cor = "Gold"
+				icone = "exclamation-triangle-fill"
+				msgerror = "could not generate password hash"
+			}*/
+
+			if msgerror == "" {
+				models.DB.Where("ID = ?", id).Updates(models.User{Name: nome, Role: role})
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User created sucessfull."
+			}
+			c.Redirect(http.StatusFound, "/")
+		}
 	}
-	log.Println("Entrei aqui!!! " + c.Request.Method)
+	//log.Println("Entrei aqui!!! " + c.Request.Method)
 
 }
