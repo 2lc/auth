@@ -28,6 +28,16 @@ type Data struct {
 	User    []models.User
 }
 
+type Dtkt struct {
+	Title   string
+	Body    string
+	Path    string
+	Message string
+	Color   string
+	Icon    string
+	Ticket  []models.Ticket
+}
+
 var msgerror, cor, icone string
 
 var jwtKey = []byte("my_secret_key")
@@ -426,5 +436,100 @@ func Users(c *gin.Context) {
 	if reset == "on" {
 		log.Println("Entrei aqui!!! " + reset)
 	}
+
+}
+
+func Tickets(c *gin.Context) {
+	/*
+		Usu := make([]models.User, 0)
+		models.DB.Find(&Usu)
+
+		page := &Data{Title: "User page", Body: "Lista de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usu}
+		err := templates.ExecuteTemplate(c.Writer, "userslist", page)
+		if err != nil {
+			log.Println(err)
+			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+			return
+		}*/
+	id := c.Param("id")
+	acao := c.Param("acao")
+	ocorrencia := c.PostForm("ocorrencia")
+	grupoatendimento := c.PostForm("grupoatendimento")
+	//reset := c.PostForm("reset")
+
+	if c.Request.Method == "GET" {
+
+		log.Println("Entrei aqui!!! ")
+
+		Tkt := make([]models.Ticket, 0)
+
+		if id != "" {
+			models.DB.Where("ID = ?", id).First(&Tkt)
+			log.Println("ID: " + id)
+		}
+
+		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: "", Ticket: Tkt}
+		err := templates.ExecuteTemplate(c.Writer, "tickets", page)
+		if err != nil {
+			log.Println(err)
+			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+			return
+		}
+
+	} else {
+		if acao == "1" {
+			var existingTicket models.Ticket
+
+			models.DB.Where("ID = ?", id).First(&existingTicket)
+
+			if existingTicket.ID != 0 {
+				cor = "Gold"
+				icone = "exclamation-triangle-fill"
+				msgerror = "Ticket alread exists"
+				return
+			}
+
+			if msgerror == "" {
+				existingTicket.Ocorrencia = ocorrencia
+				existingTicket.GrupoAtendimento = grupoatendimento
+				models.DB.Create(&existingTicket)
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User created sucessfull."
+			}
+		} else if acao == "2" {
+			var existingTicket models.Ticket
+
+			models.DB.Where("ID = ?", id).First(&existingTicket)
+
+			if existingTicket.ID == 0 {
+				cor = "Gold"
+				icone = "exclamation-triangle-fill"
+				msgerror = "Ticket NOT exists"
+				return
+			}
+			if msgerror == "" {
+				models.DB.Where("ID = ?", id).Updates(models.Ticket{Ocorrencia: ocorrencia, GrupoAtendimento: grupoatendimento})
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User created sucessfull."
+			} else {
+				log.Println(msgerror)
+			}
+		} else {
+			err := models.DB.Delete(&models.Ticket{}, id).Error
+			if err == nil {
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User deleted sucessfull."
+			} else {
+				log.Println(err.Error())
+			}
+		}
+		c.Redirect(http.StatusFound, "/users")
+	}
+	//if reset == "on" {
+	//	log.Println("Entrei aqui!!! " + reset)
+	//}
 
 }

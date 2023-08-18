@@ -3,41 +3,49 @@
 package models
 
 import (
-    "fmt"
+	"fmt"
 
-    "gorm.io/driver/postgres"
-    "gorm.io/gorm"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Config struct {
-    Host     string
-    Port     string
-    User     string
-    Password string
-    DBName   string
-    SSLMode  string
+	Host     string
+	Port     string
+	User     string
+	Password string
+	DBName   string
+	SSLMode  string
 }
 
 var DB *gorm.DB
 
 func InitDB(cfg Config) {
 
-    dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 
-    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-    if err != nil {
-        panic(err)
-    }
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
 
-    if err := db.AutoMigrate(&User{}); err != nil {
-        panic(err)
-    }
+	if err := db.AutoMigrate(&User{}); err != nil {
+		panic(err)
+	}
 
-    if err := db.AutoMigrate(&Reset_pwds{}); err != nil {
-        panic(err)
-    }
+	if err := db.AutoMigrate(&Reset_pwds{}); err != nil {
+		panic(err)
+	}
 
-    fmt.Println("Migrated database")
+	if err := db.AutoMigrate(&Ticket{}); err != nil {
+		panic(err)
+	}
 
-    DB = db
+	if err := db.AutoMigrate(&Atendimentos{}); err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Migrated database")
+
+	DB = db
 }
