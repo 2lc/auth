@@ -38,11 +38,26 @@ type Dtkt struct {
 	Ticket  []models.Ticket
 }
 
+	type v_tickets struct {
+		Id         string
+		Grupo      string
+		Data       string
+		Status     string
+		Ocorrencia string
+	}
+
 var msgerror, cor, icone string
 
 var jwtKey = []byte("my_secret_key")
 
-var templates = template.Must(template.ParseGlob("templates/*"))
+var templates = template.Must(template.ParseGlob("templates/*")).Funcs(template.FuncMap{"lpad": lpad})
+
+func lpad(str string) string {
+	for len(str) < 6 {
+		str = "0" + str
+	}
+	return str
+}
 
 func renderTemplate(c *gin.Context, tmpl string, page *Data) {
 	err := templates.ExecuteTemplate(c.Writer, tmpl, page)
@@ -347,7 +362,7 @@ func ResetPassword(c *gin.Context) {
 func ListUsers(c *gin.Context) {
 
 	Usu := make([]models.User, 0)
-	models.DB.Find(&Usu)
+	models.DB.Order("id").Find(&Usu)
 
 	page := &Data{Title: "User page", Body: "Lista de usuários", Path: "/users", Action: "Home", Message: "", Role: "", User: Usu}
 	err := templates.ExecuteTemplate(c.Writer, "userslist", page)
@@ -440,6 +455,7 @@ func Users(c *gin.Context) {
 }
 
 func Tickets(c *gin.Context) {
+
 	/*
 		Usu := make([]models.User, 0)
 		models.DB.Find(&Usu)
@@ -451,6 +467,8 @@ func Tickets(c *gin.Context) {
 			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
 			return
 		}*/
+
+	Tkt := make([]models.Ticket, 0)
 	id := c.Param("id")
 	acao := c.Param("acao")
 	ocorrencia := c.PostForm("ocorrencia")
@@ -461,11 +479,16 @@ func Tickets(c *gin.Context) {
 
 		log.Println("Entrei aqui!!! ")
 
-		Tkt := make([]models.Ticket, 0)
-
 		if id != "" {
 			models.DB.Where("ID = ?", id).First(&Tkt)
-			log.Println("ID: " + id)
+
+		} else {
+			//models.DB.Find(&Tkt)
+			var tk models.Ticket
+			tk.ID = 0
+			tk.GrupoAtendimento = ""
+			tk.Ocorrencia = ""
+			Tkt = append(Tkt, tk)
 		}
 
 		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: "", Ticket: Tkt}
@@ -483,38 +506,26 @@ func Tickets(c *gin.Context) {
 			models.DB.Where("ID = ?", id).First(&existingTicket)
 
 			if existingTicket.ID != 0 {
-				cor = "Gold"
-				icone = "exclamation-triangle-fill"
-				msgerror = "Ticket alread exists"
-				return
-			}
-
-			if msgerror == "" {
+				models.DB.Where("ID = ?", id).Updates(models.Ticket{Ocorrencia: ocorrencia, GrupoAtendimento: grupoatendimento})
+				cor = "#03c03c"
+				icone = "check-circle-fill"
+				msgerror = "User Altered sucessfull."
+			} else {
 				existingTicket.Ocorrencia = ocorrencia
 				existingTicket.GrupoAtendimento = grupoatendimento
 				models.DB.Create(&existingTicket)
 				cor = "#03c03c"
 				icone = "check-circle-fill"
 				msgerror = "User created sucessfull."
-			}
-		} else if acao == "2" {
-			var existingTicket models.Ticket
+				Tkt = append(Tkt, existingTicket)
 
-			models.DB.Where("ID = ?", id).First(&existingTicket)
-
-			if existingTicket.ID == 0 {
-				cor = "Gold"
-				icone = "exclamation-triangle-fill"
-				msgerror = "Ticket NOT exists"
-				return
-			}
-			if msgerror == "" {
-				models.DB.Where("ID = ?", id).Updates(models.Ticket{Ocorrencia: ocorrencia, GrupoAtendimento: grupoatendimento})
-				cor = "#03c03c"
-				icone = "check-circle-fill"
-				msgerror = "User created sucessfull."
-			} else {
-				log.Println(msgerror)
+				page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: "", Ticket: Tkt}
+				err := templates.ExecuteTemplate(c.Writer, "tickets", page)
+				if err != nil {
+					log.Println(err)
+					http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+					return
+				}
 			}
 		} else {
 			err := models.DB.Delete(&models.Ticket{}, id).Error
@@ -526,10 +537,30 @@ func Tickets(c *gin.Context) {
 				log.Println(err.Error())
 			}
 		}
-		c.Redirect(http.StatusFound, "/users")
+		c.Redirect(http.StatusFound, "/")
 	}
-	//if reset == "on" {
-	//	log.Println("Entrei aqui!!! " + reset)
-	//}
+}
 
+func ListTickets(c *gin.Context) {
+
+	type Dtkts struct {
+		Title   string
+		Body    string
+		Path    string
+		Message string
+		Color   string
+		Icon    string
+		Ticket  []v_tickets
+	}
+
+	Tkts := make([]v_tickets, 0)
+	models.DB.Find(&Tkts)
+
+	page := &Dtkts{Title: "Ticket page", Body: "Lista de tickets", Path: "/tickets/lista", Message: "", Ticket: Tkts}
+	err := templates.ExecuteTemplate(c.Writer, "ticketslist", page)
+	if err != nil {
+		log.Println(err)
+		http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
+		return
+	}
 }

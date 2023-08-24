@@ -22,8 +22,8 @@ func AuthRoutes(r *gin.Engine) {
 	r.GET("/users", controllers.ListUsers)
 	r.GET("/users/:id", controllers.Users)
 	r.POST("/users/:id/:acao", controllers.Users)
-	//r.GET("/tickets/lista", controllers.ListTickets)
-	r.GET("/tickets", controllers.Tickets)
+	r.GET("/tickets/lista", controllers.ListTickets)
+	r.GET("/tickets/novo", controllers.Tickets)
 	r.GET("/tickets/:id", controllers.Tickets)
 	r.POST("/tickets/:id/:acao", controllers.Tickets)
 }

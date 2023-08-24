@@ -3,6 +3,7 @@ package main
 import (
 	"auth/models"
 	"auth/routes"
+	"html/template"
 	"log"
 	"os"
 
@@ -10,9 +11,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func lpad(str string) string {
+	for len(str) < 6 {
+		str = "0" + str
+	}
+	return str
+}
+
 func main() {
 	// Create a new gin instance
 	r := gin.Default()
+	r.SetFuncMap(template.FuncMap{
+		"lpad": lpad,
+	})
 
 	// Load .env file and Create a new connection to the database
 	err := godotenv.Load()
