@@ -5,11 +5,11 @@
     <!-- Jumbotron -->
 </header>
 
-<body onload="datetime = datetime.toLocaleDateString() + 'AAA';">
-    <div class="table-responsive  px-4">
-        <table class="table table-bordered caption-top">
+<body style="margin: 0px;height: 73%;">
+    <div style="margin: 0px;height: 100%;" class="table-responsive  px-4">
+        <table class="table table-bordered caption-top align-middle">
             <caption>{{ .Body }}</caption>
-            <thead class="table-light">
+            <thead class="table-light align-middle">
                 <tr>
                     <th scope="col">Número</th>
                     <th scope="col">Grupo de atendimento</th>
@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="row">{{ .Id }}</th>
                     <td>{{ .Grupo }}</td>
-                    <td><span id="datetime" name="datetime">{{ .Data }}</span></td>
+                    <td>{{ .Data }}</td>
                     <td>{{ .Status }}</td>
                     <td><a class="btn btn-outline-info btn-sm" href="/tickets/{{ .Id }}" role="button"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

@@ -31,11 +31,13 @@
                     </label>
                 </div>
             </div>
-            <input type="submit" name="alterar" value="Salvar" class="btn btn-outline-success"
-                onclick="javascript: form.action='/users/{{ .Model.ID }}/1'" />
-            <input type="submit" name="deletar" value="Deletar" class="btn btn-outline-danger"
-                onclick="javascript: form.action='/users/{{ .Model.ID }}/2';return confirm('Deseja realmente excluir esse usuário?');" />
-            <a class="btn btn-outline-primary" href="/" role="button">Voltar</a>
+            <div class="d-grid gap-2 d-md-block">
+                <input type="submit" name="alterar" value="Salvar" class="btn btn-outline-success"
+                    onclick="javascript: form.action='/users/{{ .Model.ID }}/1'" />
+                <input type="submit" name="deletar" value="Deletar" class="btn btn-outline-danger"
+                    onclick="javascript: form.action='/users/{{ .Model.ID }}/2';return confirm('Deseja realmente excluir esse usuário?');" />
+                <a class="btn btn-outline-primary" href="/" role="button">Voltar</a>
+            </div>
             {{ end }}
         </form>
     </div>
