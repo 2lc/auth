@@ -40,6 +40,7 @@ type Dtkt struct {
 
 	type v_tickets struct {
 		Id         string
+		Usuario    string
 		Grupo      string
 		Data       string
 		Status     string

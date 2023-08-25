@@ -12,6 +12,7 @@
             <thead class="table-light align-middle">
                 <tr>
                     <th scope="col">Número</th>
+                    <th scope="col">Usuário</th>
                     <th scope="col">Grupo de atendimento</th>
                     <th scope="col">Abertura</th>
                     <th scope="col">Status</th>
@@ -22,6 +23,7 @@
                 {{ range .Ticket }}
                 <tr>
                     <th scope="row">{{ .Id }}</th>
+                    <td>{{ .Usuario }}</td>
                     <td>{{ .Grupo }}</td>
                     <td>{{ .Data }}</td>
                     <td>{{ .Status }}</td>
