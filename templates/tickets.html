@@ -5,17 +5,21 @@
     <!-- Jumbotron -->
 </header>
 
-<body class="mb-2" onload="numero.value = numero.value.padStart(6, '0');">
-    <div class="row px-4">
-        <form class="border rounded col align-self-center p-4" name="form" method="post">
+<body class="mb-2" onload="numero.value = numero.value.padStart(6, '0'); abertura.value = dt.value;">
+    <input type="hidden" id="dt" name="dt" value="{{ .Message }}">
+        <form class="row g-3 border rounded align-self-center p-4" name="form" method="post">
             <legend>{{ .Body }}</legend>
             {{ range .Ticket }}
-            <div class="col-lg-1 mb-3 mt-3">
-                <label for="numero">Número:</label>
+            <div class="col-md-1 mb-3">
+                <label for="numero" class="form-label">Número:</label>
                 <input type="text" id="numero" name="numero" class="form-control" value="{{ .Model.ID }}"
-                    style="font-family:Consolas, monaco, monospace;color:blue;font-size:18px;" disabled>
+                    style="font-family:Consolas, monaco, monospace;color:blue;font-size:16px;" disabled>
             </div>
-            <div class="col-lg-2 mb-3">
+            <div class="col-md-2 mb-3">
+                <label for="abertura" class="form-label">Abertura:</label>
+                <input type="text" id="abertura" name="abertura" class="form-control" disabled>
+            </div>
+            <div class="col-md-3 mb-3">
                 <label for="disabledSelect" class="form-label">Grupo de Atendimentos:</label>
                 <select id="grupoatendimento" name="grupoatendimento" class="form-select">
                     <option selected>{{ .GrupoAtendimento }}</option>
@@ -24,20 +28,12 @@
                     <option>Automação de Lojas</option>
                 </select>
             </div>
-            <div class="col-lg-4 mb-3">
+            <div class="col-md-12 mb-3">
                 <label for="disabledTextInput" class="form-label">Ocorrência:</label>
                 <textarea type="text" id="ocorrencia" name="ocorrencia" class="form-control"
                     value="{{ .Ocorrencia }}">{{ .Ocorrencia }}</textarea>
             </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="reset" name="reset">
-                    <label class="form-check-label" for="disabledFieldsetCheck">
-                        Reset password
-                    </label>
-                </div>
-            </div>
-            <div class="d-grid gap-2 d-md-block"> 
+            <div class="d-grid gap-2 d-md-block">
                 <input type="submit" name="alterar" value="Salvar" class="btn btn-outline-success"
                     onclick="javascript: form.action='/tickets/{{ .Model.ID }}/1'" />
                 <input type="submit" name="deletar" value="Deletar" class="btn btn-outline-danger"
@@ -49,7 +45,6 @@
 
             {{ end }}
         </form>
-    </div>
 </body>
 {{template "footer"}}
 {{end}}

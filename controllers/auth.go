@@ -38,14 +38,14 @@ type Dtkt struct {
 	Ticket  []models.Ticket
 }
 
-	type v_tickets struct {
-		Id         string
-		Usuario    string
-		Grupo      string
-		Data       string
-		Status     string
-		Ocorrencia string
-	}
+type v_tickets struct {
+	Id         string
+	Usuario    string
+	Grupo      string
+	Data       string
+	Status     string
+	Ocorrencia string
+}
 
 var msgerror, cor, icone string
 
@@ -492,7 +492,9 @@ func Tickets(c *gin.Context) {
 			Tkt = append(Tkt, tk)
 		}
 
-		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: "", Ticket: Tkt}
+		Abertura := Tkt[0].CreatedAt.Format("02-Jan-2006 15:04:05")
+
+		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: Abertura, Ticket: Tkt}
 		err := templates.ExecuteTemplate(c.Writer, "tickets", page)
 		if err != nil {
 			log.Println(err)
@@ -520,7 +522,9 @@ func Tickets(c *gin.Context) {
 				msgerror = "User created sucessfull."
 				Tkt = append(Tkt, existingTicket)
 
-				page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: "", Ticket: Tkt}
+				Abertura := Tkt[0].CreatedAt.Format("02-Jan-2006 15:04:05")
+
+				page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: Abertura, Ticket: Tkt}
 				err := templates.ExecuteTemplate(c.Writer, "tickets", page)
 				if err != nil {
 					log.Println(err)
