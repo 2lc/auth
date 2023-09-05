@@ -5,11 +5,10 @@
     <!-- Jumbotron -->
 </header>
 
-<body class="mb-2"
-    onload="numero.value = numero.value.padStart(6, '0'); abertura.value = dt.value; vstatus.value = st.value; usuario.value = usr.value;">
+<body onload="numero.value = numero.value.padStart(6, '0'); abertura.value = dt.value; vstatus.value = st.value; usuario.value = usr.value;">
     <input type="hidden" id="dt" name="dt" value="{{ .Message }}">
     <input type="hidden" id="usr" name="usr" value="{{ .Usuario }}">
-    <form class="row g-3 border rounded align-self-center p-4 mx-3" name="form" method="post">
+    <form class="row g-3 border rounded align-self-center p-4 m-3" name="form" method="post">
         <legend>{{ .Body }}</legend>
         {{ range .Ticket }}
         <div class="col-md-1 mb-3">
