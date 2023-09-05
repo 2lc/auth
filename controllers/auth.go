@@ -33,6 +33,7 @@ type Dtkt struct {
 	Body    string
 	Path    string
 	Message string
+	Usuario string
 	Color   string
 	Icon    string
 	Ticket  []models.Ticket
@@ -468,21 +469,25 @@ func Tickets(c *gin.Context) {
 			http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
 			return
 		}*/
-
+	dt_format := "02/01/2006 15:04:05"
 	Tkt := make([]models.Ticket, 0)
+	Usr := make([]models.User, 0)
 	id := c.Param("id")
 	acao := c.Param("acao")
 	ocorrencia := c.PostForm("ocorrencia")
 	grupoatendimento := c.PostForm("grupoatendimento")
 	//reset := c.PostForm("reset")
+	Usuario := ""
 
 	if c.Request.Method == "GET" {
 
-		log.Println("Entrei aqui!!! ")
+		//log.Println("Entrei aqui!!! ")
 
 		if id != "" {
 			models.DB.Where("ID = ?", id).First(&Tkt)
-
+			usr_id := Tkt[0].UserAbertura
+			models.DB.Where("ID = ?", usr_id).First(&Usr)
+			Usuario = Usr[0].Name
 		} else {
 			//models.DB.Find(&Tkt)
 			var tk models.Ticket
@@ -492,9 +497,9 @@ func Tickets(c *gin.Context) {
 			Tkt = append(Tkt, tk)
 		}
 
-		Abertura := Tkt[0].CreatedAt.Format("02-Jan-2006 15:04:05")
+		Abertura := Tkt[0].CreatedAt.Format(dt_format)
 
-		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: Abertura, Ticket: Tkt}
+		page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: Abertura, Usuario: Usuario, Ticket: Tkt}
 		err := templates.ExecuteTemplate(c.Writer, "tickets", page)
 		if err != nil {
 			log.Println(err)
@@ -522,7 +527,7 @@ func Tickets(c *gin.Context) {
 				msgerror = "User created sucessfull."
 				Tkt = append(Tkt, existingTicket)
 
-				Abertura := Tkt[0].CreatedAt.Format("02-Jan-2006 15:04:05")
+				Abertura := Tkt[0].CreatedAt.Format(dt_format)
 
 				page := &Dtkt{Title: "Tickets", Body: "Abertura de Tickets", Path: "/tickets", Message: Abertura, Ticket: Tkt}
 				err := templates.ExecuteTemplate(c.Writer, "tickets", page)

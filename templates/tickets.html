@@ -5,46 +5,62 @@
     <!-- Jumbotron -->
 </header>
 
-<body class="mb-2" onload="numero.value = numero.value.padStart(6, '0'); abertura.value = dt.value;">
+<body class="mb-2"
+    onload="numero.value = numero.value.padStart(6, '0'); abertura.value = dt.value; vstatus.value = st.value; usuario.value = usr.value;">
     <input type="hidden" id="dt" name="dt" value="{{ .Message }}">
-        <form class="row g-3 border rounded align-self-center p-4" name="form" method="post">
-            <legend>{{ .Body }}</legend>
-            {{ range .Ticket }}
-            <div class="col-md-1 mb-3">
-                <label for="numero" class="form-label">Número:</label>
-                <input type="text" id="numero" name="numero" class="form-control" value="{{ .Model.ID }}"
-                    style="font-family:Consolas, monaco, monospace;color:blue;font-size:16px;" disabled>
-            </div>
-            <div class="col-md-2 mb-3">
-                <label for="abertura" class="form-label">Abertura:</label>
-                <input type="text" id="abertura" name="abertura" class="form-control" disabled>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label for="disabledSelect" class="form-label">Grupo de Atendimentos:</label>
-                <select id="grupoatendimento" name="grupoatendimento" class="form-select">
-                    <option selected>{{ .GrupoAtendimento }}</option>
-                    <option>Sistemas Corporativos</option>
-                    <option>Infra Estrutura</option>
-                    <option>Automação de Lojas</option>
-                </select>
-            </div>
-            <div class="col-md-12 mb-3">
-                <label for="disabledTextInput" class="form-label">Ocorrência:</label>
-                <textarea type="text" id="ocorrencia" name="ocorrencia" class="form-control"
-                    value="{{ .Ocorrencia }}">{{ .Ocorrencia }}</textarea>
-            </div>
-            <div class="d-grid gap-2 d-md-block">
-                <input type="submit" name="alterar" value="Salvar" class="btn btn-outline-success"
-                    onclick="javascript: form.action='/tickets/{{ .Model.ID }}/1'" />
-                <input type="submit" name="deletar" value="Deletar" class="btn btn-outline-danger"
-                    onclick="javascript: form.action='/tickets/{{ .Model.ID }}/2';return confirm('Deseja realmente excluir esse ticket?');" />
-                <a class="btn btn-outline-warning" role="button"
-                    onclick="javascript: var num=prompt('Informe o número do ticket');this.href='/tickets/'+num;">Consultar</a>
-                <a class="btn btn-outline-primary" href="/">Voltar</a>
-            </div>
+    <input type="hidden" id="usr" name="usr" value="{{ .Usuario }}">
+    <form class="row g-3 border rounded align-self-center p-4 mx-3" name="form" method="post">
+        <legend>{{ .Body }}</legend>
+        {{ range .Ticket }}
+        <div class="col-md-1 mb-3">
+            <label for="numero" class="form-label">Número:</label>
+            <input type="text" id="numero" name="numero" class="form-control" value="{{ .Model.ID }}"
+                style="font-weight: bold;" disabled>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label for="abertura" class="form-label">Abertura:</label>
+            <input type="text" id="abertura" name="abertura" class="form-control" disabled>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label for="usuario" class="form-label">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" class="form-control" disabled>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="disabledSelect" class="form-label">Grupo de Atendimentos:</label>
+            <select id="grupoatendimento" name="grupoatendimento" class="form-select">
+                <option selected>{{ .GrupoAtendimento }}</option>
+                <option>Sistemas Corporativos</option>
+                <option>Infra Estrutura</option>
+                <option>Automação de Lojas</option>
+            </select>
+        </div>
+        <div class="col-md-3 mb-3">
+            <input type="hidden" id="st" name="st" value="{{ .Status }}">
+            <label for="vstatus" class="form-label">Status:</label>
+            <select id="vstatus" name="vstatus" class="form-select">
+                <option value="0">Aguardando Atendimento</option>
+                <option value="1">Em Atendimento</option>
+                <option value="2">Aguardando Usuário</option>
+                <option value="3">Fechado</option>
+            </select>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="disabledTextInput" class="form-label">Ocorrência:</label>
+            <textarea type="text" id="ocorrencia" name="ocorrencia" class="form-control"
+                value="{{ .Ocorrencia }}">{{ .Ocorrencia }}</textarea>
+        </div>
+        <div class="d-grid gap-2 d-md-block">
+            <input type="submit" name="alterar" value="Salvar" class="btn btn-outline-success"
+                onclick="javascript: form.action='/tickets/{{ .Model.ID }}/1'" />
+            <input type="submit" name="deletar" value="Deletar" class="btn btn-outline-danger"
+                onclick="javascript: form.action='/tickets/{{ .Model.ID }}/2';return confirm('Deseja realmente excluir esse ticket?');" />
+            <a class="btn btn-outline-warning" role="button"
+                onclick="javascript: var num=prompt('Informe o número do ticket');this.href='/tickets/'+num;">Consultar</a>
+            <a class="btn btn-outline-primary" href="/">Voltar</a>
+        </div>
 
-            {{ end }}
-        </form>
+        {{ end }}
+    </form>
 </body>
 {{template "footer"}}
 {{end}}
