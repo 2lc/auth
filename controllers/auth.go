@@ -411,10 +411,11 @@ func Users(c *gin.Context) {
 	} else {
 		if acao == "1" {
 			var existingUser models.User
+			var num_reg int64
 
-			models.DB.Where("ID = ?", id).First(&existingUser)
+			models.DB.Where("ID = ?", id).First(&existingUser).Count(&num_reg)
 
-			if existingUser.ID == 0 {
+			if num_reg == 0 {
 				cor = "Gold"
 				icone = "exclamation-triangle-fill"
 				msgerror = "user NOT already exists"

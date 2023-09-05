@@ -11,11 +11,15 @@
             <legend>{{ .Body }}</legend>
             {{ range .User }}
             <div class="col-lg-4 mb-3">
-                <label for="disabledTextInput" class="form-label">Nome</label>
+                <label for="name" class="form-label">Nome</label>
                 <input type="text" id="name" name="name" class="form-control" value="{{ .Name }}">
             </div>
+            <div class="col-lg-4 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" id="email" name="email" class="form-control" value="{{ .Email }}" disabled>
+            </div>
             <div class="col-lg-2 mb-3">
-                <label for="disabledSelect" class="form-label">Perfil</label>
+                <label for="role" class="form-label">Perfil</label>
                 <select id="role" name="role" class="form-select">
                     <option selected>{{ .Role }}</option>
                     <option>admin</option>
