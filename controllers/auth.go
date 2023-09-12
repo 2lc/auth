@@ -485,7 +485,13 @@ func Tickets(c *gin.Context) {
 		//log.Println("Entrei aqui!!! ")
 
 		if id != "" {
-			models.DB.Where("ID = ?", id).First(&Tkt)
+			err := models.DB.Where("ID = ?", id).First(&Tkt).Error
+			
+			if err != nil {
+				log.Println(err)
+				http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			usr_id := Tkt[0].UserAbertura
 			models.DB.Where("ID = ?", usr_id).First(&Usr)
 			Usuario = Usr[0].Name
