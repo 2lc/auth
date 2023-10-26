@@ -486,7 +486,7 @@ func Tickets(c *gin.Context) {
 
 		if id != "" {
 			err := models.DB.Where("ID = ?", id).First(&Tkt).Error
-			
+
 			if err != nil {
 				log.Println(err)
 				http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
@@ -580,4 +580,8 @@ func ListTickets(c *gin.Context) {
 		http.Error(c.Writer, "there was an error", http.StatusInternalServerError)
 		return
 	}
+}
+func About(c *gin.Context) {
+	page := &Data{Title: "Auth page", Body: "Welcome to our brand new home page.", Path: "/about", Action: "Sign In", Message: msgerror, Color: cor, Icon: icone}
+	renderTemplate(c, "about", page)
 }

@@ -1,0 +1,77 @@
+{{ define "about" }}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="templates/style-home.css">
+    <!-- <script type="text/javascript" src="js/script.js"></script> -->
+</head>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="menu-bars" viewBox="0 0 448 512">
+        <path
+            d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
+    </symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="comida" viewBox="0 -960 960 960">
+        <path
+            d="M280-80v-366q-51-14-85.5-56T160-600v-280h80v280h40v-280h80v280h40v-280h80v280q0 56-34.5 98T360-446v366h-80Zm400 0v-320H560v-280q0-83 58.5-141.5T760-880v800h-80Z" />
+    </symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="bebida" viewBox="0 -960 960 960">
+        <path
+            d="M240-120v-80h200v-200L120-760v-80h720v80L520-400v200h200v80H240Zm58-560h364l72-80H226l72 80Zm182 204 111-124H369l111 124Zm0 0Z" />
+    </symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="cerveja" viewBox="0 -960 960 960">
+        <path
+            d="M320-200h280v-400h-80q-28 0-46 14t-43 41q-20 22-46.5 45.5T320-465v265Zm-80 80v-346q-52-14-86-56t-34-98q0-53 30.5-94t78.5-57q23-48 68.5-78T400-879q35 0 65.5 12t55.5 32q10-2 19-3.5t20-1.5q66 0 113 47t47 113q0 22-5.5 42T698-600h62q33 0 56.5 23.5T840-520v240q0 33-23.5 56.5T760-200h-80v80H240Zm-40-500q0 33 23.5 56.5T280-540q32 0 54.5-21t46.5-47q25-27 56.5-49.5T520-680h120q0-33-23.5-56.5T560-760q-25 0-42 6.5l-17 6.5-31-26q-11-9-28.5-17.5T400-799q-32 0-58.5 17T301-736l-14 30-32 11q-25 8-40 28.5T200-620Zm480 340h80v-240h-80v240Zm-360 80h280-280Z" />
+    </symbol>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="loja" viewBox="0 -960 960 960">
+        <path
+            d="M841-518v318q0 33-23.5 56.5T761-120H201q-33 0-56.5-23.5T121-200v-318q-23-21-35.5-54t-.5-72l42-136q8-26 28.5-43t47.5-17h556q27 0 47 16.5t29 43.5l42 136q12 39-.5 71T841-518Zm-272-42q27 0 41-18.5t11-41.5l-22-140h-78v148q0 21 14 36.5t34 15.5Zm-180 0q23 0 37.5-15.5T441-612v-148h-78l-22 140q-4 24 10.5 42t37.5 18Zm-178 0q18 0 31.5-13t16.5-33l22-154h-78l-40 134q-6 20 6.5 43t41.5 23Zm540 0q29 0 42-23t6-43l-42-134h-76l22 154q3 20 16.5 33t31.5 13ZM201-200h560v-282q-5 2-6.5 2H751q-27 0-47.5-9T663-518q-18 18-41 28t-49 10q-27 0-50.5-10T481-518q-17 18-39.5 28T393-480q-29 0-52.5-10T299-518q-21 21-41.5 29.5T211-480h-4.5q-2.5 0-5.5-2v282Zm560 0H201h560Z" />
+    </symbol>
+</svg>
+
+<body>
+    <nav>
+        <input type="checkbox" id="menu">
+        <label for="menu" class="toggle"><svg role="img" fill="white">
+                <use href="#menu-bars" />
+            </svg></label>
+        <label class="logo">Bar <span>Legal</span></label>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Pedidos</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Sair</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="item"><svg role="img">
+                <use href="#comida" />
+            </svg></div>
+        <div class="item"><svg role="img">
+                <use href="#bebida" />
+            </svg></div>
+        <div class="item"><svg role="img">
+                <use href="#cerveja" />
+            </svg></div>
+        <div class="item"><svg role="img">
+                <use href="#loja" />
+            </svg></div>
+        <div class="item">Caixa5</div>
+        <div class="item">Caixa6</div>
+        <div class="item">Caixa7</div>
+    </div>
+</body>
+
+</html>
+{{ end }}

@@ -26,4 +26,5 @@ func AuthRoutes(r *gin.Engine) {
 	r.GET("/tickets/novo", controllers.Tickets)
 	r.GET("/tickets/:id", controllers.Tickets)
 	r.POST("/tickets/:id/:acao", controllers.Tickets)
+	r.GET("/about", controllers.About)
 }
